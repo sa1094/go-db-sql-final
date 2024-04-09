@@ -59,7 +59,7 @@ func TestAddGetDelete(t *testing.T) {
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
 	id, err := store.Add(parcel)
 	require.NoError(t, err)
-	require.Greater(t, id, 0)
+	require.NotEmpty(t, id)
 	parcel.Number = id
 
 	// get
@@ -89,7 +89,7 @@ func TestSetAddress(t *testing.T) {
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
 	id, err := store.Add(parcel)
 	require.NoError(t, err)
-	require.Greater(t, id, 0)
+	require.NotEmpty(t, id)
 	parcel.Number = id
 
 	// set address
@@ -114,7 +114,7 @@ func TestCannotSetAddress(t *testing.T) {
 
 	id, err := store.Add(parcel)
 	require.NoError(t, err)
-	require.Greater(t, id, 0)
+	require.NotEmpty(t, id)
 	parcel.Number = id
 
 	statuses := []string{ParcelStatusSent, ParcelStatusDelivered}
@@ -145,7 +145,7 @@ func TestSetStatus(t *testing.T) {
 	// добавьте новую посылку в БД, убедитесь в отсутствии ошибки и наличии идентификатора
 	id, err := store.Add(parcel)
 	require.NoError(t, err)
-	require.Greater(t, id, 0)
+	require.NotEmpty(t, id)
 	parcel.Number = id
 
 	// set status
@@ -170,7 +170,7 @@ func TestNoDeleteStatus(t *testing.T) {
 
 	id, err := store.Add(parcel)
 	require.NoError(t, err)
-	require.Greater(t, id, 0)
+	require.NotEmpty(t, id)
 	parcel.Number = id
 
 	// set status
@@ -208,7 +208,7 @@ func TestGetByClient(t *testing.T) {
 		parcel.Client = client
 		id, err := store.Add(parcel)
 		require.NoError(t, err)
-		require.Greater(t, id, 0)
+		require.NotEmpty(t, id)
 		// обновляем идентификатор добавленной у посылки
 		parcel.Number = id
 		// сохраняем добавленную посылку в структуру map, чтобы её можно было легко достать по идентификатору посылки
