@@ -87,19 +87,21 @@ func (s ParcelStore) SetAddress(number int, address string) error {
 	// менять адрес можно только если значение статуса registered
 	// отдаем ошибку, если нельзя обновить адрес
 	var t int
-	sqlExpr := "SELECT 1 FROM parcel WHERE number=:number AND status='registered'"
+	sqlExpr := "SELECT 1 FROM parcel WHERE number=:number AND status=:status"
 	r := s.db.QueryRow(sqlExpr,
-		sql.Named("number", number))
+		sql.Named("number", number),
+		sql.Named("status", ParcelStatusRegistered))
 
 	err := r.Scan(&t)
 	if err != nil {
 		return err
 	}
 
-	sqlExpr = "UPDATE parcel SET address=:address WHERE number=:number AND status='registered'"
+	sqlExpr = "UPDATE parcel SET address=:address WHERE number=:number AND status=:status"
 	_, err = s.db.Exec(sqlExpr,
 		sql.Named("number", number),
-		sql.Named("address", address))
+		sql.Named("address", address),
+		sql.Named("status", ParcelStatusRegistered))
 
 	return err
 }
@@ -107,10 +109,11 @@ func (s ParcelStore) SetAddress(number int, address string) error {
 func (s ParcelStore) Delete(number int) error {
 	// реализуйте удаление строки из таблицы parcel
 	// удалять строку можно только если значение статуса registered
-	sqlExpr := "DELETE FROM parcel WHERE number=:number and status='registered'"
+	sqlExpr := "DELETE FROM parcel WHERE number=:number and status=:status"
 
 	_, err := s.db.Exec(sqlExpr,
-		sql.Named("number", number))
+		sql.Named("number", number),
+		sql.Named("status", ParcelStatusRegistered))
 
 	return err
 }
